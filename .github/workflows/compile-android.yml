@@ -38,8 +38,12 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore --configfile GalaxyBudsClient/nuget.config GalaxyBudsClient.Android/GalaxyBudsClient.Android.csproj
       
+    - name: Build Generators project
+      run: dotnet build GalaxyBudsClient.Generators/GalaxyBudsClient.Generators.csproj -c Release
+      
     - name: Build APK
       run: |
+        dotnet clean
         dotnet publish -f net8.0-android -c Release \
           -p:AndroidPackageFormats=apk \
           -p:AndroidKeyStore=false \
