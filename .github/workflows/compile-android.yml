@@ -46,6 +46,8 @@ jobs:
           -p:DebugType=PdbOnly \
           -p:NotDebuggable=true \
           -p:EmbedAssembliesIntoApk=true \
+          -p:RuntimeIdentifier=android-arm64 \
+          -p:AndroidSupportedAbis=arm64-v8a \
           GalaxyBudsClient.Android/GalaxyBudsClient.Android.csproj
 
     - name: Upload APK artifact
@@ -53,29 +55,3 @@ jobs:
       with:
         name: GalaxyBudsClient_Android_APK
         path: GalaxyBudsClient.Android/bin/Release/net8.0-android/*.apk
-
-  attach-to-release:
-    runs-on: ubuntu-latest
-    needs: [build-android]
-    if: github.event_name == 'release'
-    
-    steps:
-    - name: Download APK artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: GalaxyBudsClient_Android_APK
-        
-    - name: Download AAB artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: GalaxyBudsClient_Android_AAB
-        
-    - name: Rename artifacts
-      run: |
-        mv *.apk GalaxyBudsClient_Android.apk
-        mv *.aab GalaxyBudsClient_Android.aab
-
-    - uses: AButler/upload-release-assets@v2.0
-      with:
-        files: 'GalaxyBudsClient_Android.*'
-        repo-token: ${{ secrets.GH_TOKEN }}
