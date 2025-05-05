@@ -31,7 +31,10 @@ jobs:
         
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
-        
+      
+    - name: Install .NET Android workload
+      run: dotnet workload install android
+  
     - name: Restore dependencies
       run: dotnet restore --configfile GalaxyBudsClient/nuget.config GalaxyBudsClient.Android/GalaxyBudsClient.Android.csproj
       
